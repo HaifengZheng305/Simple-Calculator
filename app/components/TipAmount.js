@@ -12,7 +12,32 @@ const tips = [
 const TipAmount = ({ setTip }) => {
   const [customSelected, setCustomSelected] = useState(false);
   const [activeTip, setActiveTip] = useState(null);
-  const [customTup, SetCustomTip] = useState(0);
+  const [customTip, setCustomTip] = useState(0);
+
+  const handleTipClick = (index) => {
+    setCustomSelected(false);
+
+    if (activeTip === index) {
+      setActiveTip(null);
+      return;
+    }
+
+    setActiveTip(index);
+
+    setTip(tips[index].tips / 100);
+  };
+
+  const handleCustomTip = () => {
+    setActiveTip(null);
+    setCustomSelected(true);
+    setTip(customTip / 100);
+  };
+
+  const handleCustomTipBlur = () => {
+    setTip(customTip / 100);
+    if (customTip > 0) return;
+    setCustomSelected(false);
+  };
 
   return (
     <div>
@@ -36,15 +61,15 @@ const TipAmount = ({ setTip }) => {
                     className="block h-full w-full rounded-md border-0 px-2 py-1.5 text-gray-900 outline-none ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-500 sm:text-sm sm:leading-6"
                     placeholder="0.00"
                     aria-describedby="tip-amount"
-                    // value={customTip}
-                    // onChange={(e) => setCustomTip(e.target.value)}
-                    // onBlur={handleCustomTipBlur}
+                    value={customTip}
+                    onChange={(e) => setCustomTip(e.target.value)}
+                    onBlur={handleCustomTipBlur}
                   />
                 ) : (
                   <button
                     type="button"
                     className="w-full rounded-md bg-gray-100 px-3.5 py-2.5 font-medium text-cyan-700 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
-                    // onClick={handleCustomTip}
+                    onClick={handleCustomTip}
                   >
                     Custom
                   </button>
@@ -58,7 +83,7 @@ const TipAmount = ({ setTip }) => {
                     ? "bg-cyan-200 text-cyan-700 hover:bg-cyan-100"
                     : "bg-cyan-600 text-white hover:bg-cyan-500"
                 } w-full rounded-md px-3.5 py-2.5 shadow-sm file:font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600`}
-                // onClick={() => handleTipClick(index)}
+                onClick={() => handleTipClick(index)}
               >
                 {tip.tips}%
               </button>
